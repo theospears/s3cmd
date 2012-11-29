@@ -106,7 +106,10 @@ def fetch_local_list(args, recursive = None):
                     relative_file = replace_nonprintables(relative_file)
                 if relative_file.startswith('./'):
                     relative_file = relative_file[2:]
-                sr = os.stat_result(os.lstat(full_name))
+                if cfg.follow_symlinks:
+                    sr = os.stat_result(os.stat(full_name))
+                else:
+                    sr = os.stat_result(os.lstat(full_name))
                 loc_list[relative_file] = {
                     'full_name_unicode' : unicodise(full_name),
                     'full_name' : full_name,
